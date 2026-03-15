@@ -1,6 +1,7 @@
 import { useState , useEffect} from 'react'
+import { Link } from 'react-router-dom';
 
-export const ShoppingCards = () => {
+export const ShoppingCards = ({onAdd}) => {
 
         const [products, setProducts] = useState([]);
         const fetchProducts = async () => {
@@ -12,7 +13,7 @@ export const ShoppingCards = () => {
           else {
             const data = await response.json();
             setProducts(data);
-            console.log('Products fetched successfully:', products);
+            console.log('Products fetched successfully:', data);
           }
     
         } catch (error) {
@@ -22,23 +23,50 @@ export const ShoppingCards = () => {
     
       useEffect(() => {
         fetchProducts();
+        
     
-    
-      },);
+      },[]);
 
 
     return (
         <>
-            <div>
-                <h1 className="text-indigo-600">Shopping Cards</h1>
-                <p>Turn ul into a grid of product cards</p>
-                <ul>
-                    {products.map((product) => (
-                        <li key={product.id || product._id}>
-                            {product.name} - ${product.price}
-                        </li>
-        ))}
-                </ul>
+            <div className='bg-gray-80 min-h-screen py-15'>
+                <div className='container mx-auto px-15 relative'>
+                  <h1 className='text-5xl font-extrabold text-gray-1000 text-center mb-15 border-b-2 border-indigo-600'>Our Products</h1>
+                  <div>
+                  <div>
+                    <Link 
+                      to={"/"} 
+                      className="bg-indigo-600 text-white p-2 rounded">
+                      {"Main Page"}
+                    </Link>                  
+                  </div>
+                  <div>
+                    <Link 
+                      to={"/checkout"} 
+                      className="bg-indigo-600 text-white p-2 rounded absolute top-15 right-20">
+                      {"Cart"}
+                    </Link>
+                  </div>
+                </div>
+                  <div className='grid grid-cols-4 gap-4'>                  
+                    {products.map((p) => (
+                      <div key={p.id}>
+                        <p className='font-semibold text-xl text-center'>{p.name}</p>
+                        {/*image div so that different sizes dont affect layout*/}
+                        <div className='h-64 overflow-hidden bg-gray-280 mb-2'>
+                          <img src={p.image_url} alt={`${p.name} image`} className=''></img>
+                        </div>
+                        {/*text changing button*/}
+                          <div className="group cursor-pointer">
+                            <button className='w-full bg-indigo-500 hover:bg-pink-400 text-white px-2 py-2 font-semibold rounded-xl block group-hover:hidden'>{`${p.price} $`}</button>
+                            <button onClick={() => onAdd(p)} className='w-full bg-indigo-500 hover:bg-pink-400 text-white px-2 py-2 font-semibold rounded-xl hidden group-hover:block'>Add To Cart</button>
+                          </div>
+                        </div>
+                    ))}
+                  </div>
+
+                </div>
             </div>
         </>
     )
