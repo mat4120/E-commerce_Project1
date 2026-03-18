@@ -34,29 +34,34 @@ export const Homepage = () => {
     return (
         <>
             <div className='bg-gray-80 min-h-screen py-10'>
-                <h1 className='text-4xl font-bold text-center text-gray-900 border-b-2 pb-4'>Main Page</h1>
-                <div>
-                  <div>
+                <h1 className='text-4xl font-extrabold text-center text-gray-900 border-b-2 pb-4 border-indigo-600'>Main Page</h1>
+                {/*Nav div*/}
+                <div className=' grid grid-cols-3'>
+                  <div className='flex justify-center'>
                     <Link 
                       to={"/about"} 
-                      className="bg-indigo-600 text-white p-2 rounded">
+                      className="bg-indigo-600 text-white p-2 rounded-b w-2/3 block text-center font-semibold">
                       {"About page"}
                     </Link>                  
                   </div>
-                  <div>
+                  <div className='flex justify-center'>
                     <Link 
                       to={"/shop"} 
-                      className="bg-indigo-600 text-white p-2 rounded">
+                      className="bg-indigo-600 text-white p-2 rounded-b w-2/3 block text-center font-semibold">
                       {"Shop"}
                     </Link>
                   </div>
-                  <div>
+                  <div className='flex justify-center'>
                     <Link 
                       to={"/checkout"} 
-                      className="bg-indigo-600 text-white p-2 rounded">
-                      {"cart"}
+                      className="bg-indigo-600 text-white p-2 rounded w-2/3 block text-center justify-right font-semibold">
+                      {"Cart"}
                     </Link>
                   </div>
+                </div>
+                {/*Daily offer div*/}
+                <div>
+
                 </div>
             </div>
         </>
