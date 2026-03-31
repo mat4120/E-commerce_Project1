@@ -13,6 +13,7 @@ Added:
 - Navigation bar and Footer which are globally generated
 - Now Cart uses LocalStorage so cart caries between refreshes
 - Cart page is now restricted for only authed users (123:123/abc:abc)
+- Transtitions to every clickable object so that UI feels smoother 
 # Technologies Used
 - React
 - Express
