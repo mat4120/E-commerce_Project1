@@ -1,8 +1,13 @@
-import { useState } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { AppRoutes } from './routes'
+import { AuthContext } from './auth/authContext';
 
 function App() {
-const [cart, setCart] = useState([]);
+const { token } = useContext(AuthContext); 
+const [cart, setCart] = useState(() => {
+  const saved = localStorage.getItem("cart");
+  return saved ? JSON.parse(saved) : [];
+});
 
 {/*Add to cart, if already is in increase quantity*/}
 const addToCart = product => {
@@ -50,7 +55,8 @@ const handleOrder = async () => {
     const response = await fetch('http://localhost:3000/api/orders', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({
         items: cart,
@@ -60,7 +66,7 @@ const handleOrder = async () => {
     });
     if (response.ok){
       alert("Success")
-      setCart([])
+      clearCart();
     }else{
       alert("Something went wrong")
     }
@@ -70,6 +76,10 @@ const handleOrder = async () => {
   }
 };
 
+  useEffect (() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+  },[cart])
 
 
 

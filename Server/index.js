@@ -2,6 +2,8 @@ import 'dotenv/config';
 import express from 'express';
 import pgPromise from 'pg-promise';
 import cors from 'cors';
+import authRoutes from './routes/authRoutes.js'
+import { tokenCheck } from './middleware/authMiddleware.js';
 
 const app = express();
 app.use(express.json());
@@ -11,6 +13,8 @@ app.use(cors());
 const pgp = pgPromise();
 const db = pgp(process.env.DATABASE_URL);
 
+/*Middleware*/
+app.use("/api/auth", authRoutes)
 
 /*Sending DB data to Front-end*/
 app.get('/api/products', async (req, res) => {
@@ -22,6 +26,9 @@ app.get('/api/products', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+/*Auth check*/
+app.use(tokenCheck)
 
 /*Order logic*/
 app.post('/api/orders', async (req, res) => {
