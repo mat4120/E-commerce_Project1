@@ -7,7 +7,6 @@ import {
 import { Homepage } from "./pages/homepage";
 import { ShoppingCards } from "./pages/shoppingCards";
 import { CheckoutPage } from "./pages/checkoutPage";
-import { AboutPage } from "./pages/about";
 import { PrivRoute } from "./auth/privRoute";
 import { Login } from "./auth/login";
 import { Register } from "./auth/register";
@@ -55,7 +54,6 @@ export const AppRoutes = ({
               </PrivRoute>
             }
           />
-          <Route path="about" element={<AboutPage />} />
         </Route>
       </Routes>
     </Router>
