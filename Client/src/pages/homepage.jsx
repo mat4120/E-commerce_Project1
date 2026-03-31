@@ -4,17 +4,16 @@ import { LogOut, LogIn } from "lucide-react";
 import { AuthContext } from "../auth/authContext.jsx";
 import { NavBar } from "./navBar.jsx";
 
-export const Homepage = ({onAdd}) => {
+export const Homepage = ({ onAdd }) => {
   const [products, setProducts] = useState([]);
-  const [timeLeft, setTimeLeft] = useState("")
+  const [timeLeft, setTimeLeft] = useState("");
   const getAlsoIndex = useMemo(() => {
-  if (products.length <= 6) return 0;
-  const randomIndex = Math.floor(Math.random() * (products.length - 6 + 1));
-  
-  return Math.max(0, randomIndex);
-}, [products.length]);
+    if (products.length <= 6) return 0;
+    const randomIndex = Math.floor(Math.random() * (products.length - 6 + 1));
 
-  
+    return Math.max(0, randomIndex);
+  }, [products.length]);
+
   const todayIndex = useMemo(() => {
     const today = new Date();
     const seed =
@@ -43,29 +42,30 @@ export const Homepage = ({onAdd}) => {
     }
   };
 
-
   useEffect(() => {
     fetchProducts();
   }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
-    const now = new Date();
-    const midnight = new Date();
-    midnight.setHours(23, 59, 59, 999);
+      const now = new Date();
+      const midnight = new Date();
+      midnight.setHours(23, 59, 59, 999);
 
-    const diff = midnight - now;
-    if (diff > 0) {
-      const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const m = Math.floor((diff / 1000 / 60) % 60);
-      const s = Math.floor((diff / 1000) % 60);
-        
-      setTimeLeft(`${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`);
-  }
-  }, 1000);
+      const diff = midnight - now;
+      if (diff > 0) {
+        const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const m = Math.floor((diff / 1000 / 60) % 60);
+        const s = Math.floor((diff / 1000) % 60);
 
-  return () => clearInterval(timer); // Crucial Cleanup!
-}, []);
+        setTimeLeft(
+          `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`,
+        );
+      }
+    }, 1000);
+
+    return () => clearInterval(timer); // Crucial Cleanup!
+  }, []);
 
   return (
     <>
@@ -74,8 +74,12 @@ export const Homepage = ({onAdd}) => {
           {/*Offer of a day*/}
           {products.length > 0 && (
             <div className="relative flex flex-col bg-neutral-600 p-5 w-150 justify-center rounded-xl border-2 border-pink-700">
-              <div className="absolute p-1 bg-pink-500 rounded-xl font-semibold -top-4 -right-3">-50%</div>
-              <h2 className="text-white text-2xl mb-4 font-semibold">Offer of the Day</h2>
+              <div className="absolute p-1 bg-pink-500 rounded-xl font-semibold -top-4 -right-3">
+                -50%
+              </div>
+              <h2 className="text-white text-2xl mb-4 font-semibold">
+                Offer of the Day
+              </h2>
               <img
                 src={products[todayIndex].image_url}
                 className="rounded-xl object-cover"
@@ -84,54 +88,54 @@ export const Homepage = ({onAdd}) => {
                 {products[todayIndex].name}
               </p>
               <p className="text-2xl text-pink-500">{`$ ${products[todayIndex].price / 2}`}</p>
-              <p className="text-gray-100">Offer ends in: <span className="text-2xl text-red-500">{timeLeft}</span></p>
-              
-                    <button
-                      onClick={() => onAdd(products[todayIndex])}
-                      className="cursor-pointer w-full bg-gray-100 hover:bg-gray-300 transition-all duration-300 text-neutral-900 px-2 py-2 font-semibold rounded-xl mt-2"
-                    >
-                      Add To Cart
-                    </button>
-                  
+              <p className="text-gray-100">
+                Offer ends in:{" "}
+                <span className="text-2xl text-red-500">{timeLeft}</span>
+              </p>
+
+              <button
+                onClick={() => onAdd(products[todayIndex])}
+                className="cursor-pointer w-full bg-gray-100 hover:bg-gray-300 transition-all duration-300 text-neutral-900 px-2 py-2 font-semibold rounded-xl mt-2"
+              >
+                Add To Cart
+              </button>
             </div>
           )}
           {/*Recomended*/}
-          {
-            products.length > 0 && (
-              <div className="mt-5 flex flex-col">
-            <h2 className="text-gray-100 text-2xl font-bold">Recomendations:</h2>
-            <div className="grid grid-cols-3 gap-1 ">
-              {products.slice(getAlsoIndex, getAlsoIndex + 6).map((p) => (
-                <div className="bg-neutral-600 p-2 rounded-xl">
-                  <p className="font-semibold text-gray-100 text-md text-center truncate text-lg truncate">
-                    {p.name}
-                  </p>
-                  {/*image div so that different sizes dont affect layout*/}
-                  <div className="overflow-hidden bg-gray-200 mb-2 rounded-xl">
-                    <img
-                      src={p.image_url}
-                      alt={`${p.name} image`}
-                      className="l"
-                    ></img>
+          {products.length > 0 && (
+            <div className="mt-5 flex flex-col">
+              <h2 className="text-gray-100 text-2xl font-bold">
+                Recomendations:
+              </h2>
+              <div className="grid grid-cols-3 gap-1 ">
+                {products.slice(getAlsoIndex, getAlsoIndex + 6).map((p) => (
+                  <div className="bg-neutral-600 p-2 rounded-xl">
+                    <p className="font-semibold text-gray-100 text-md text-center truncate text-lg truncate">
+                      {p.name}
+                    </p>
+                    {/*image div so that different sizes dont affect layout*/}
+                    <div className="overflow-hidden bg-gray-200 mb-2 rounded-xl">
+                      <img
+                        src={p.image_url}
+                        alt={`${p.name} image`}
+                        className="l"
+                      ></img>
+                    </div>
+                    {/*text changing button*/}
+                    <div className="relative group cursor-pointer h-10">
+                      <button className="absolute w-full bg-gray-100 px-2 py-2 font-semibold rounded-xl block group-hover:opacity-0 text-neutral-900 transition-all duration-300 ease-in-out">{`${p.price} $`}</button>
+                      <button
+                        onClick={() => onAdd(p)}
+                        className="absolute cursor-pointer w-full bg-gray-300 text-neutral-900 px-2 py-2 font-semibold rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 ease-in-out"
+                      >
+                        Add To Cart
+                      </button>
+                    </div>
                   </div>
-                  {/*text changing button*/}
-                  <div className="relative group cursor-pointer h-10">
-                    <button className="absolute w-full bg-gray-100 px-2 py-2 font-semibold rounded-xl block group-hover:opacity-0 text-neutral-900 transition-all duration-300 ease-in-out">{`${p.price} $`}</button>
-                    <button
-                      onClick={() => onAdd(p)}
-                      className="absolute cursor-pointer w-full bg-gray-300 text-neutral-900 px-2 py-2 font-semibold rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 ease-in-out"
-                    >
-                      Add To Cart
-                    </button>
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
-            )
-            
-          }
-          
+          )}
         </div>
       </div>
     </>
